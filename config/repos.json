@@ -1,0 +1,18 @@
+[
+  {
+    "id": "Qwen/Qwen3-8B",
+    "family": "Qwen3"
+  },
+  {
+    "id": "Qwen/Qwen3-32B",
+    "family": "Qwen3"
+  },
+  {
+    "id": "Qwen/Qwen3-235B-A22B",
+    "family": "Qwen3"
+  },
+  {
+    "id": "deepseek-ai/DeepSeek-V4-Flash",
+    "family": "DeepSeek-V4"
+  }
+]

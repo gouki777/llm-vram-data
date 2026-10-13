@@ -1,0 +1,108 @@
+{
+  "updated_at": "2026-10-13T08:46:26.574Z",
+  "schema_version": 1,
+  "models": [
+    {
+      "id": "Qwen/Qwen3-8B",
+      "family": "Qwen3",
+      "params": 8190735360,
+      "dtypes": {
+        "BF16": 8190735360
+      },
+      "weights_gb": {
+        "native": 15.3
+      },
+      "weights_source": {
+        "native": "measured"
+      },
+      "gguf": {},
+      "layers": 36,
+      "kv_heads": 8,
+      "head_dim": 128,
+      "kv_lora_rank": null,
+      "attention_type": "GQA",
+      "max_context": 40960,
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-13T08:46:20.502Z",
+      "stale": false
+    },
+    {
+      "id": "Qwen/Qwen3-32B",
+      "family": "Qwen3",
+      "params": 32762123264,
+      "dtypes": {
+        "BF16": 32762123264
+      },
+      "weights_gb": {
+        "native": 61
+      },
+      "weights_source": {
+        "native": "measured"
+      },
+      "gguf": {},
+      "layers": 64,
+      "kv_heads": 8,
+      "head_dim": 128,
+      "kv_lora_rank": null,
+      "attention_type": "GQA",
+      "max_context": 40960,
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-13T08:46:22.516Z",
+      "stale": false
+    },
+    {
+      "id": "Qwen/Qwen3-235B-A22B",
+      "family": "Qwen3",
+      "params": 235093634560,
+      "dtypes": {
+        "BF16": 235093634560
+      },
+      "weights_gb": {
+        "native": 437.9
+      },
+      "weights_source": {
+        "native": "measured"
+      },
+      "gguf": {},
+      "layers": 94,
+      "kv_heads": 4,
+      "head_dim": 128,
+      "kv_lora_rank": null,
+      "attention_type": "GQA",
+      "max_context": 40960,
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-13T08:46:24.543Z",
+      "stale": false
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V4-Flash",
+      "family": "DeepSeek-V4",
+      "params": 290944616402,
+      "dtypes": {
+        "BF16": 1415259264,
+        "I64": 2327040,
+        "F32": 36168018,
+        "F8_E4M3": 6023020544,
+        "I8": 283467841536
+      },
+      "weights_gb": {
+        "native": 148.7
+      },
+      "weights_source": {
+        "native": "measured"
+      },
+      "gguf": {},
+      "layers": 43,
+      "kv_heads": 1,
+      "head_dim": 512,
+      "kv_lora_rank": null,
+      "attention_type": "CSA/HCA",
+      "max_context": 1048576,
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-13T08:46:26.574Z",
+      "stale": false,
+      "qk_rope_head_dim": 64,
+      "note": "压缩注意力，KV 不能套标准公式，需人工填实测值"
+    }
+  ]
+}

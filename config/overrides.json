@@ -1,0 +1,7 @@
+{
+  "deepseek-ai/DeepSeek-V4-Flash": {
+    "override_kv_per_token_kb": null,
+    "attention_type": "CSA/HCA",
+    "note": "压缩注意力，KV 不能套标准公式，需人工填实测值"
+  }
+}

@@ -1,0 +1,47 @@
+name: Crawl LLM Models Data
+
+on:
+  schedule:
+    # 每天 UTC 02:00（北京时间 10:00）自动执行
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    # 支持在 GitHub 网页手动点击触发
+
+permissions:
+  contents: write
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出仓库代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js 20 运行环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 执行大模型参数与权重爬虫
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          node scripts/crawl.mjs
+
+      - name: 检查数据变化并提交推送
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 检查 models.json 是否存在差异
+          if git diff --quiet models.json; then
+            echo "models.json 无任何变动，无需提交。"
+            exit 0
+          fi
+
+          # 获取当前 UTC 时间作为提交信息
+          COMMIT_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          git add models.json
+          git commit -m "data: ${COMMIT_TIME}"
+          git push

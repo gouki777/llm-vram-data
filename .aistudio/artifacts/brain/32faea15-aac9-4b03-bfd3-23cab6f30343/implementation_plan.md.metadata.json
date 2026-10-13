@@ -1,0 +1,6 @@
+{
+  "summary": "llm-vram-data 自动爬虫仓库与数据定义实现方案，包含 Node.js 20 爬虫脚本逻辑、GitHub Actions 定时同步工作流、模型配置与覆盖清单、models.json 结构规范及极简展示指引。",
+  "updatedAt": "2026-10-13T08:39:39.537910079Z",
+  "requestFeedback": true,
+  "userFacing": true
+}
