@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-15T06:52:32.711Z",
+  "updated_at": "2026-10-16T06:40:06.469Z",
   "schema_version": 1,
   "models": [
     {
@@ -23,7 +23,7 @@
       "attention_type": "GQA",
       "max_context": 40960,
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-15T06:52:27.636Z",
+      "crawled_at": "2026-10-16T06:40:01.723Z",
       "stale": false
     },
     {
@@ -47,7 +47,7 @@
       "attention_type": "GQA",
       "max_context": 40960,
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-15T06:52:29.325Z",
+      "crawled_at": "2026-10-16T06:40:03.286Z",
       "stale": false
     },
     {
@@ -71,7 +71,7 @@
       "attention_type": "GQA",
       "max_context": 40960,
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-15T06:52:31.019Z",
+      "crawled_at": "2026-10-16T06:40:04.910Z",
       "stale": false
     },
     {
@@ -99,7 +99,7 @@
       "attention_type": "CSA/HCA",
       "max_context": 1048576,
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-15T06:52:32.711Z",
+      "crawled_at": "2026-10-16T06:40:06.469Z",
       "stale": false,
       "qk_rope_head_dim": 64,
       "note": "压缩注意力，KV 不能套标准公式，需人工填实测值"
