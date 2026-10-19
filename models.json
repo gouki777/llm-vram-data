@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-19T06:27:40.606Z",
+  "updated_at": "2026-10-10T06:27:40.606Z",
   "schema_version": 1,
   "models": [
     {
@@ -350,7 +350,7 @@
         "kv_max_context_gb_int4": 43.75
       },
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-19T06:27:40.606Z",
+      "crawled_at": "2026-10-10T06:27:40.606Z",
       "stale": false,
       "note": "音视频多模态生成模型 (MiniMaxH3Transformer3DModel)，全套物理体积 464.1 GB"
     }
