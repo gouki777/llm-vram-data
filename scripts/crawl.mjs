@@ -170,7 +170,7 @@ async function crawlSingleModel(repoConfig) {
   console.log(`\n▶ 正在爬取模型: ${id} (${family})`);
 
   // 1. 获取模型基本信息与 safetensors 参数分布
-  const modelInfoUrl = `https://huggingface.co/api/models/${id}?expand[]=safetensors`;
+  const modelInfoUrl = `https://huggingface.co/api/models/${id}?expand[]=safetensors&expand[]=createdAt&expand[]=lastModified`;
   const modelInfo = await fetchWithRetry(modelInfoUrl);
 
   const safetensorsData = modelInfo.safetensors || {};
@@ -179,23 +179,64 @@ async function crawlSingleModel(repoConfig) {
     ? safetensorsData.parameters
     : null;
 
-  // 2. 获取模型结构配置 config.json（兼容 config.text_config 嵌套结构）
-  const configUrl = `https://huggingface.co/${id}/resolve/main/config.json`;
-  const rawConfig = await fetchWithRetry(configUrl);
+  // 1.1 提取模型发布/创建日期（原生的 Hugging Face createdAt）
+  let createdAtRaw = modelInfo.createdAt || modelInfo.lastModified;
+  if (!createdAtRaw) {
+    try {
+      const basicInfo = await fetchWithRetry(`https://huggingface.co/api/models/${id}`);
+      createdAtRaw = basicInfo.createdAt || basicInfo.lastModified;
+    } catch {}
+  }
+  const created_at = createdAtRaw ? createdAtRaw.split('T')[0] : '2026-01-01';
+
+  // 1.2 判定模型原生主权重精度（Main Dtype: BF16 / FP16 / FP8 / INT8 / FP4 等）
+  let main_dtype = 'BF16';
+  if (dtypes && typeof dtypes === 'object' && Object.keys(dtypes).length > 0) {
+    let maxParamCount = -1;
+    for (const [dt, count] of Object.entries(dtypes)) {
+      if (typeof count === 'number' && count > maxParamCount) {
+        maxParamCount = count;
+        main_dtype = dt;
+      }
+    }
+  }
+
+  // 2. 获取模型结构配置 config.json（兼容普通 CausalLM、text_config 嵌套结构，以及 diffusers/多模态子模块）
+  let rawConfig = null;
+  const configCandidates = [
+    `https://huggingface.co/${id}/resolve/main/config.json`,
+    `https://huggingface.co/${id}/resolve/main/transformer/config.json`,
+    `https://huggingface.co/${id}/resolve/main/FL2VA/transformer/config.json`,
+    `https://huggingface.co/${id}/resolve/main/text_encoder/config.json`,
+    `https://huggingface.co/${id}/resolve/main/model_index.json`,
+  ];
+
+  for (const candUrl of configCandidates) {
+    try {
+      rawConfig = await fetchWithRetry(candUrl);
+      if (rawConfig && typeof rawConfig === 'object') break;
+    } catch {
+      // 尝试下一个候选地址
+    }
+  }
+
+  if (!rawConfig) {
+    throw new Error('未能从仓库及其子目录中获取到有效的 config.json');
+  }
 
   // 若存在 text_config 嵌套结构，优先合并以兼容多模态/特殊模型
   const cfg = (rawConfig.text_config && typeof rawConfig.text_config === 'object')
     ? { ...rawConfig, ...rawConfig.text_config }
     : rawConfig;
 
-  // 提取层数
-  const layers = cfg.num_hidden_layers ?? null;
+  // 提取层数（支持 num_hidden_layers 与 num_layers）
+  const layers = cfg.num_hidden_layers ?? cfg.num_layers ?? null;
 
   // 提取 KV Heads（若无 num_key_value_heads 则降级使用 num_attention_heads）
   const kv_heads = cfg.num_key_value_heads ?? cfg.num_attention_heads ?? null;
 
-  // 提取 head_dim（若无则尝试用 hidden_size / num_attention_heads 计算）
-  let head_dim = cfg.head_dim ?? null;
+  // 提取 head_dim（若无则尝试用 hidden_size / num_attention_heads 计算，或从 attention_head_dim 获取）
+  let head_dim = cfg.head_dim ?? cfg.attention_head_dim ?? null;
   if (head_dim === null && typeof cfg.hidden_size === 'number' && typeof cfg.num_attention_heads === 'number' && cfg.num_attention_heads > 0) {
     head_dim = Math.round(cfg.hidden_size / cfg.num_attention_heads);
   }
@@ -245,10 +286,54 @@ async function crawlSingleModel(repoConfig) {
     }
   }
 
+  // 4. 精确计算单 Token 的 KV Cache 占用字节数与 1M 上下文显存
+  let kv_cache = null;
+  if (layers && (kv_heads || kv_lora_rank)) {
+    let elementsPerToken = 0;
+    if (typeof kv_lora_rank === 'number' && kv_lora_rank > 0) {
+      // MLA 机制：每层仅缓存一个压缩潜在向量 c_t^KV 加上解耦位置编码
+      const rank = kv_lora_rank + (qk_rope_head_dim || 0);
+      elementsPerToken = layers * rank;
+    } else if (kv_heads && head_dim) {
+      // 标准 MHA / GQA / MQA 机制：Key 和 Value 各一个向量 (2 * layers * kv_heads * head_dim)
+      elementsPerToken = 2 * layers * kv_heads * head_dim;
+    }
+
+    if (elementsPerToken > 0) {
+      const bytesFp16 = elementsPerToken * 2;   // 16-bit
+      const bytesFp8 = elementsPerToken * 1;    // 8-bit
+      const bytesInt4 = elementsPerToken * 0.5; // 4-bit
+
+      const kbPerTokenFp16 = Number((bytesFp16 / 1024).toFixed(3));
+
+      // 严格根据模型实际支持的最大 Context 计算（如 256K = 262,144 tokens，1M = 1,048,576 tokens）
+      const actualMaxContext = max_context || 131072;
+      const actualMaxContextK = Math.round(actualMaxContext / 1024);
+
+      // 显存 (GB) = (bytesPerToken * actualMaxContext) / (1024^3)
+      const kvMaxContextGbFp16 = Number(((bytesFp16 * actualMaxContext) / (1024 ** 3)).toFixed(2));
+      const kvMaxContextGbFp8 = Number(((bytesFp8 * actualMaxContext) / (1024 ** 3)).toFixed(2));
+      const kvMaxContextGbInt4 = Number(((bytesInt4 * actualMaxContext) / (1024 ** 3)).toFixed(2));
+
+      kv_cache = {
+        elements_per_token: elementsPerToken,
+        bytes_per_token_fp16: bytesFp16,
+        kb_per_token_fp16: kbPerTokenFp16,
+        actual_max_context_tokens: actualMaxContext,
+        actual_max_context_k: `${actualMaxContextK}K`,
+        kv_max_context_gb_fp16: kvMaxContextGbFp16,
+        kv_max_context_gb_fp8: kvMaxContextGbFp8,
+        kv_max_context_gb_int4: kvMaxContextGbInt4,
+      };
+    }
+  }
+
   // 组装最终模型对象
   const result = {
     id,
     family,
+    created_at,
+    main_dtype,
     params,
     dtypes,
     weights_gb,
@@ -260,6 +345,7 @@ async function crawlSingleModel(repoConfig) {
     kv_lora_rank,
     attention_type,
     max_context,
+    kv_cache,
     override_kv_per_token_kb: null,
     crawled_at: new Date().toISOString(),
     stale: false,

@@ -1,14 +1,26 @@
+# ==============================================================================
+# llm-vram-data 自动化爬虫工作流
+# 
+# 触发机制：
+# 1. 计划定时：每天 UTC 02:00（北京时间 10:00）自动执行一次。
+# 2. 手动测试 (workflow_dispatch)：
+#    在 GitHub 仓库页面 -> Actions -> 选择 "Crawl LLM Models Data" -> 点击 "Run workflow" 即可手动测试执行！
+#
+# 权限要求：
+# - 必须在仓库 Settings -> Actions -> General -> Workflow permissions 开启 "Read and write permissions"。
+# ==============================================================================
+
 name: Crawl LLM Models Data
 
 on:
   schedule:
-    # 每天 UTC 02:00（北京时间 10:00）自动执行
+    # 每天 UTC 02:00 自动触发
     - cron: "0 2 * * *"
   workflow_dispatch:
-    # 支持在 GitHub 网页手动点击触发
+    # 允许在 GitHub 网页上手动点击「Run workflow」按钮执行测试
 
 permissions:
-  contents: write
+  contents: write # 授予写入权限以便自动提交并推送更新的 models.json
 
 jobs:
   crawl:

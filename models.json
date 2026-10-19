@@ -1,82 +1,12 @@
 {
-  "updated_at": "2026-10-18T06:53:32.267Z",
+  "updated_at": "2026-10-19T06:27:40.606Z",
   "schema_version": 1,
   "models": [
     {
-      "id": "Qwen/Qwen3-8B",
-      "family": "Qwen3",
-      "params": 8190735360,
-      "dtypes": {
-        "BF16": 8190735360
-      },
-      "weights_gb": {
-        "native": 15.3
-      },
-      "weights_source": {
-        "native": "measured"
-      },
-      "gguf": {},
-      "layers": 36,
-      "kv_heads": 8,
-      "head_dim": 128,
-      "kv_lora_rank": null,
-      "attention_type": "GQA",
-      "max_context": 40960,
-      "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-18T06:53:27.384Z",
-      "stale": false
-    },
-    {
-      "id": "Qwen/Qwen3-32B",
-      "family": "Qwen3",
-      "params": 32762123264,
-      "dtypes": {
-        "BF16": 32762123264
-      },
-      "weights_gb": {
-        "native": 61
-      },
-      "weights_source": {
-        "native": "measured"
-      },
-      "gguf": {},
-      "layers": 64,
-      "kv_heads": 8,
-      "head_dim": 128,
-      "kv_lora_rank": null,
-      "attention_type": "GQA",
-      "max_context": 40960,
-      "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-18T06:53:29.011Z",
-      "stale": false
-    },
-    {
-      "id": "Qwen/Qwen3-235B-A22B",
-      "family": "Qwen3",
-      "params": 235093634560,
-      "dtypes": {
-        "BF16": 235093634560
-      },
-      "weights_gb": {
-        "native": 437.9
-      },
-      "weights_source": {
-        "native": "measured"
-      },
-      "gguf": {},
-      "layers": 94,
-      "kv_heads": 4,
-      "head_dim": 128,
-      "kv_lora_rank": null,
-      "attention_type": "GQA",
-      "max_context": 40960,
-      "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-18T06:53:30.640Z",
-      "stale": false
-    },
-    {
       "id": "deepseek-ai/DeepSeek-V4-Flash",
       "family": "DeepSeek-V4",
+      "created_at": "2026-04-22",
+      "main_dtype": "I8",
       "params": 290944616402,
       "dtypes": {
         "BF16": 1415259264,
@@ -98,11 +28,331 @@
       "kv_lora_rank": null,
       "attention_type": "CSA/HCA",
       "max_context": 1048576,
+      "kv_cache": {
+        "elements_per_token": 44032,
+        "bytes_per_token_fp16": 88064,
+        "kb_per_token_fp16": 86,
+        "actual_max_context_tokens": 1048576,
+        "actual_max_context_k": "1024K",
+        "kv_max_context_gb_fp16": 86,
+        "kv_max_context_gb_fp8": 43,
+        "kv_max_context_gb_int4": 21.5
+      },
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-18T06:53:32.267Z",
+      "crawled_at": "2026-10-19T06:27:16.253Z",
       "stale": false,
       "qk_rope_head_dim": 64,
       "note": "压缩注意力，KV 不能套标准公式，需人工填实测值"
+    },
+    {
+      "id": "Qwen/Qwen3.8-27B",
+      "family": "Qwen3.8",
+      "created_at": "2026-08-05",
+      "main_dtype": "BF16",
+      "params": 27781427952,
+      "dtypes": {
+        "BF16": 27781427952
+      },
+      "weights_gb": {
+        "native": 51.7,
+        "fp8": 28.7
+      },
+      "weights_source": {
+        "native": "measured",
+        "fp8": "measured"
+      },
+      "gguf": {},
+      "layers": 64,
+      "kv_heads": 4,
+      "head_dim": 256,
+      "kv_lora_rank": null,
+      "attention_type": "GQA",
+      "max_context": 262144,
+      "kv_cache": {
+        "elements_per_token": 131072,
+        "bytes_per_token_fp16": 262144,
+        "kb_per_token_fp16": 256,
+        "actual_max_context_tokens": 262144,
+        "actual_max_context_k": "256K",
+        "kv_max_context_gb_fp16": 64,
+        "kv_max_context_gb_fp8": 32,
+        "kv_max_context_gb_int4": 16
+      },
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-19T06:27:19.415Z",
+      "stale": false
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V4-Pro",
+      "family": "DeepSeek-V4",
+      "created_at": "2026-04-22",
+      "main_dtype": "I8",
+      "params": 1598839674782,
+      "dtypes": {
+        "BF16": 2816899328,
+        "I64": 2327040,
+        "F32": 87776414,
+        "F8_E4M3": 23169335296,
+        "I8": 1572763336704
+      },
+      "weights_gb": {
+        "native": 805.3
+      },
+      "weights_source": {
+        "native": "measured"
+      },
+      "gguf": {},
+      "layers": 61,
+      "kv_heads": 1,
+      "head_dim": 512,
+      "kv_lora_rank": null,
+      "attention_type": "CSA/HCA",
+      "max_context": 1048576,
+      "kv_cache": {
+        "elements_per_token": 62464,
+        "bytes_per_token_fp16": 124928,
+        "kb_per_token_fp16": 122,
+        "actual_max_context_tokens": 1048576,
+        "actual_max_context_k": "1024K",
+        "kv_max_context_gb_fp16": 122,
+        "kv_max_context_gb_fp8": 61,
+        "kv_max_context_gb_int4": 30.5
+      },
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-19T06:27:21.436Z",
+      "stale": false,
+      "qk_rope_head_dim": 64,
+      "note": "压缩注意力，KV 不能套标准公式，需人工填实测值"
+    },
+    {
+      "id": "XiaomiMiMo/MiMo-V2.6-Pro-RL",
+      "family": "MiMo-V2.6",
+      "created_at": "2026-09-21",
+      "main_dtype": "U8",
+      "params": 1024216603392,
+      "dtypes": {
+        "BF16": 10647286656,
+        "F32": 26496,
+        "F8_E4M3": 13378781184,
+        "U8": 1000190509056
+      },
+      "weights_gb": {
+        "native": 534.1
+      },
+      "weights_source": {
+        "native": "measured"
+      },
+      "gguf": {},
+      "layers": 70,
+      "kv_heads": 8,
+      "head_dim": 192,
+      "kv_lora_rank": null,
+      "attention_type": "GQA",
+      "max_context": 1048576,
+      "kv_cache": {
+        "elements_per_token": 215040,
+        "bytes_per_token_fp16": 430080,
+        "kb_per_token_fp16": 420,
+        "actual_max_context_tokens": 1048576,
+        "actual_max_context_k": "1024K",
+        "kv_max_context_gb_fp16": 420,
+        "kv_max_context_gb_fp8": 210,
+        "kv_max_context_gb_int4": 105
+      },
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-19T06:27:23.472Z",
+      "stale": false
+    },
+    {
+      "id": "XiaomiMiMo/MiMo-V2.6-Flash-RL",
+      "family": "MiMo-V2.6",
+      "created_at": "2026-09-21",
+      "main_dtype": "U8",
+      "params": 310756322688,
+      "dtypes": {
+        "F32": 12032,
+        "BF16": 4101308032,
+        "F8_E4M3": 3859808256,
+        "U8": 302795194368
+      },
+      "weights_gb": {
+        "native": 165.5
+      },
+      "weights_source": {
+        "native": "measured"
+      },
+      "gguf": {},
+      "layers": 48,
+      "kv_heads": 4,
+      "head_dim": 192,
+      "kv_lora_rank": null,
+      "attention_type": "GQA",
+      "max_context": 1048576,
+      "kv_cache": {
+        "elements_per_token": 73728,
+        "bytes_per_token_fp16": 147456,
+        "kb_per_token_fp16": 144,
+        "actual_max_context_tokens": 1048576,
+        "actual_max_context_k": "1024K",
+        "kv_max_context_gb_fp16": 144,
+        "kv_max_context_gb_fp8": 72,
+        "kv_max_context_gb_int4": 36
+      },
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-19T06:27:25.495Z",
+      "stale": false
+    },
+    {
+      "id": "Qwen/Qwen3-8B",
+      "family": "Qwen3",
+      "created_at": "2025-04-27",
+      "main_dtype": "BF16",
+      "params": 8190735360,
+      "dtypes": {
+        "BF16": 8190735360
+      },
+      "weights_gb": {
+        "native": 15.3,
+        "fp8": 8.8
+      },
+      "weights_source": {
+        "native": "measured",
+        "fp8": "measured"
+      },
+      "gguf": {},
+      "layers": 36,
+      "kv_heads": 8,
+      "head_dim": 128,
+      "kv_lora_rank": null,
+      "attention_type": "GQA",
+      "max_context": 40960,
+      "kv_cache": {
+        "elements_per_token": 73728,
+        "bytes_per_token_fp16": 147456,
+        "kb_per_token_fp16": 144,
+        "actual_max_context_tokens": 40960,
+        "actual_max_context_k": "40K",
+        "kv_max_context_gb_fp16": 5.63,
+        "kv_max_context_gb_fp8": 2.81,
+        "kv_max_context_gb_int4": 1.41
+      },
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-19T06:27:28.177Z",
+      "stale": false
+    },
+    {
+      "id": "Qwen/Qwen3-32B",
+      "family": "Qwen3",
+      "created_at": "2025-04-27",
+      "main_dtype": "BF16",
+      "params": 32762123264,
+      "dtypes": {
+        "BF16": 32762123264
+      },
+      "weights_gb": {
+        "native": 61,
+        "fp8": 32
+      },
+      "weights_source": {
+        "native": "measured",
+        "fp8": "measured"
+      },
+      "gguf": {},
+      "layers": 64,
+      "kv_heads": 8,
+      "head_dim": 128,
+      "kv_lora_rank": null,
+      "attention_type": "GQA",
+      "max_context": 40960,
+      "kv_cache": {
+        "elements_per_token": 131072,
+        "bytes_per_token_fp16": 262144,
+        "kb_per_token_fp16": 256,
+        "actual_max_context_tokens": 40960,
+        "actual_max_context_k": "40K",
+        "kv_max_context_gb_fp16": 10,
+        "kv_max_context_gb_fp8": 5,
+        "kv_max_context_gb_int4": 2.5
+      },
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-19T06:27:30.871Z",
+      "stale": false
+    },
+    {
+      "id": "Qwen/Qwen3-235B-A22B",
+      "family": "Qwen3",
+      "created_at": "2025-04-27",
+      "main_dtype": "BF16",
+      "params": 235093634560,
+      "dtypes": {
+        "BF16": 235093634560
+      },
+      "weights_gb": {
+        "native": 437.9,
+        "fp8": 222.6
+      },
+      "weights_source": {
+        "native": "measured",
+        "fp8": "measured"
+      },
+      "gguf": {},
+      "layers": 94,
+      "kv_heads": 4,
+      "head_dim": 128,
+      "kv_lora_rank": null,
+      "attention_type": "GQA",
+      "max_context": 40960,
+      "kv_cache": {
+        "elements_per_token": 96256,
+        "bytes_per_token_fp16": 192512,
+        "kb_per_token_fp16": 188,
+        "actual_max_context_tokens": 40960,
+        "actual_max_context_k": "40K",
+        "kv_max_context_gb_fp16": 7.34,
+        "kv_max_context_gb_fp8": 3.67,
+        "kv_max_context_gb_int4": 1.84
+      },
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-19T06:27:33.566Z",
+      "stale": false
+    },
+    {
+      "id": "MiniMaxAI/MiniMax-H3",
+      "family": "MiniMax",
+      "created_at": "2026-07-28",
+      "main_dtype": "BF16",
+      "params": 33140215072,
+      "dtypes": {
+        "F32": 17222144,
+        "BF16": 33105770752
+      },
+      "weights_gb": {
+        "native": 464.1
+      },
+      "weights_source": {
+        "native": "measured"
+      },
+      "gguf": {},
+      "layers": 50,
+      "kv_heads": 56,
+      "head_dim": 128,
+      "kv_lora_rank": null,
+      "attention_type": "DiT / 3D-Transformer",
+      "max_context": null,
+      "kv_cache": {
+        "elements_per_token": 716800,
+        "bytes_per_token_fp16": 1433600,
+        "kb_per_token_fp16": 1400,
+        "actual_max_context_tokens": 131072,
+        "actual_max_context_k": "128K",
+        "kv_max_context_gb_fp16": 175,
+        "kv_max_context_gb_fp8": 87.5,
+        "kv_max_context_gb_int4": 43.75
+      },
+      "override_kv_per_token_kb": null,
+      "crawled_at": "2026-10-19T06:27:40.606Z",
+      "stale": false,
+      "note": "音视频多模态生成模型 (MiniMaxH3Transformer3DModel)，全套物理体积 464.1 GB"
     }
   ]
 }

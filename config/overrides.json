@@ -3,5 +3,18 @@
     "override_kv_per_token_kb": null,
     "attention_type": "CSA/HCA",
     "note": "压缩注意力，KV 不能套标准公式，需人工填实测值"
+  },
+  "deepseek-ai/DeepSeek-V4-Pro": {
+    "override_kv_per_token_kb": null,
+    "attention_type": "CSA/HCA",
+    "note": "压缩注意力，KV 不能套标准公式，需人工填实测值"
+  },
+  "MiniMaxAI/MiniMax-H3": {
+    "params": 33140215072,
+    "layers": 50,
+    "kv_heads": 56,
+    "head_dim": 128,
+    "attention_type": "DiT / 3D-Transformer",
+    "note": "音视频多模态生成模型 (MiniMaxH3Transformer3DModel)，全套物理体积 464.1 GB"
   }
 }

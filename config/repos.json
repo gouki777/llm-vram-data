@@ -1,18 +1,50 @@
 [
   {
+    "id": "deepseek-ai/DeepSeek-V4-Flash",
+    "family": "DeepSeek-V4"
+  },
+  {
+    "id": "Qwen/Qwen3.8-27B",
+    "family": "Qwen3.8",
+    "quants": {
+      "fp8": "Qwen/Qwen3.8-27B-FP8"
+    }
+  },
+  {
+    "id": "deepseek-ai/DeepSeek-V4-Pro",
+    "family": "DeepSeek-V4"
+  },
+  {
+    "id": "XiaomiMiMo/MiMo-V2.6-Pro-RL",
+    "family": "MiMo-V2.6"
+  },
+  {
+    "id": "XiaomiMiMo/MiMo-V2.6-Flash-RL",
+    "family": "MiMo-V2.6"
+  },
+  {
     "id": "Qwen/Qwen3-8B",
-    "family": "Qwen3"
+    "family": "Qwen3",
+    "quants": {
+      "fp8": "Qwen/Qwen3-8B-FP8"
+    }
   },
   {
     "id": "Qwen/Qwen3-32B",
-    "family": "Qwen3"
+    "family": "Qwen3",
+    "quants": {
+      "fp8": "Qwen/Qwen3-32B-FP8"
+    }
   },
   {
     "id": "Qwen/Qwen3-235B-A22B",
-    "family": "Qwen3"
+    "family": "Qwen3",
+    "quants": {
+      "fp8": "Qwen/Qwen3-235B-A22B-FP8"
+    }
   },
   {
-    "id": "deepseek-ai/DeepSeek-V4-Flash",
-    "family": "DeepSeek-V4"
+    "id": "MiniMaxAI/MiniMax-H3",
+    "family": "MiniMax"
   }
 ]

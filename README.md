@@ -69,7 +69,21 @@ Hugging Face 对未认证请求有严格的 IP 速率限制，配置 Token 可�
 
 ### 1. 如何新增监控模型
 
-编辑 `config/repos.json` 数组，添加对应模型条目：
+有两种方式可以录入新模型：
+
+#### 方式 A：粘贴 URL 自动解析添加（推荐）
+直接使用内置脚本，传入一个或多个 Hugging Face URL，脚本会自动提取 ID、探测官方是否存在 FP8 量化仓库、推断家族分组并自动写入 `config/repos.json`：
+
+```bash
+# 单个模型
+node scripts/add-model.mjs https://huggingface.co/Qwen/Qwen3.8-27B
+
+# 支持一次粘贴多个 URL 或 ID
+node scripts/add-model.mjs https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL
+```
+
+#### 方式 B：手动编辑 `config/repos.json`
+直接在数组中追加条目：
 
 ```json
 [
@@ -88,7 +102,18 @@ Hugging Face 对未认证请求有严格的 IP 速率限制，配置 Token 可�
 - `family`: 模型分组名称，供前端 UI 分组筛选显示（必需）。
 - `quants`: 可选。同模型的官方量化仓库。若不确定量化仓库名，请留空让前端自行按公式估算，不要编造。
 
-### 2. 如何人工修正参数
+### 2. 如何删除监控模型
+
+- **方式 A：使用内置命令行脚本（推荐）**：
+  ```bash
+  # 根据模型 ID 或 URL 快速移除
+  node scripts/remove-model.mjs Qwen/Qwen3-8B
+  node scripts/remove-model.mjs https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash
+  ```
+- **方式 B：手动从 `config/repos.json` 中删除对应条目**。
+- **方式 C：在 Web 控制台直接点击红色的删除图标**，支持一键导出或下载更新后的 `repos.json`。
+
+### 3. 如何人工修正参数
 
 若某个特殊模型（如 DeepSeek-V4、压缩注意力架构）无法简单通过标准配置公式计算 KV Cache，或官方 config 存在偏差，可在 `config/overrides.json` 中配置人工实测覆盖值。
 
@@ -192,3 +217,78 @@ HF_TOKEN=hf_xxxxxxxxxxxxxxxxx node scripts/crawl.mjs
 ### 容错设计验证：
 - 若遇网络异常或某个模型 ID 不存在，脚本**不会中断退出**，而是记录错误并继续抓取其余模型。
 - 若 `models.json` 已有该模型的历史数据，会自动保留旧参数并打上 `"stale": true` 标记。
+
+---
+
+## ❓ 常见问题与操作指引 (FAQ & Guide)
+
+### Q1: 如何录入一个新模型？
+录入新模型非常简单，只需修改配置文件：
+1. **确定 Hugging Face 模型 ID**：在 Hugging Face 找到官方仓库，复制其作者与仓库名（例如 `meta-llama/Llama-3.1-8B-Instruct`）。确保该仓库包含 `config.json` 与权重文件（safetensors 等）。
+2. **编辑 `config/repos.json`**：在 JSON 数组中追加一条记录：
+   ```json
+   {
+     "id": "meta-llama/Llama-3.1-8B-Instruct",
+     "family": "Llama-3.1"
+   }
+   ```
+   - 若官方有量化版本仓库（如官方 FP8 / AWQ 仓库），可填写在 `quants` 字段中：
+     ```json
+     {
+       "id": "Qwen/Qwen3-32B",
+       "family": "Qwen3",
+       "quants": {
+         "fp8": "Qwen/Qwen3-32B-FP8"
+       }
+     }
+     ```
+   - *注：若量化仓库不确定，直接省略 `quants` 即可，由显存计算器前端用参数量和位宽公式估算。*
+3. **（可选）添加人工修正项**：如果该模型结构特殊（如压缩注意力、稀疏注意力导致每 Token KV 缓存非标准），可在 `config/overrides.json` 中添加实测值覆盖：
+   ```json
+   {
+     "meta-llama/Llama-3.1-8B-Instruct": {
+       "note": "实测标准 GQA"
+     }
+   }
+   ```
+4. **提交并推送**：将修改后的 `config/repos.json` push 到 GitHub 仓库即可。
+
+---
+
+### Q2: 如何在 GitHub 页面上测试跑 Actions 工作流？
+本项目的 GitHub Actions 启用了 `workflow_dispatch`，支持在 GitHub 网页上随时一键手动运行：
+1. 打开你的 GitHub 仓库主页，点击顶部的 **Actions** 标签页。
+2. 在左侧工作流列表中，找到并点击 **Crawl LLM Models Data**。
+3. 在页面右上方会看到一条提示栏，点击 **Run workflow** 下拉按钮。
+4. 确认 Branch 为 `main`，点击绿色的 **Run workflow** 按钮启动任务。
+5. 页面将在几秒内刷新出一个黄色正在运行的构建（Run）。点击进入该任务 -> 点击 `crawl` 作业，即可实时展开查看每个模型的抓取日志。
+6. 任务完成后（显示绿色对勾），若 `models.json` 有内容更新，GitHub Actions 会自动以 `github-actions[bot]` 身份提交一次 commit 并推送到 `main` 分支。
+
+---
+
+### Q3: Actions 自动推送时报错 `Permission to ... denied to github-actions[bot]` 怎么办？
+这是因为 GitHub 新建仓库默认把 Actions 的 GITHUB_TOKEN 权限设为了只读。
+**解决办法**：
+1. 进入仓库的 **Settings** -> 左侧点击 **Actions** -> **General**。
+2. 页面向下滚动到 **Workflow permissions**。
+3. 勾选 **Read and write permissions**。
+4. 点击底部的 **Save** 按钮。
+5. 重新进入 Actions 页面点击 **Run workflow** 即可成功提交推送。
+
+---
+
+### Q4: 提示 `HTTP 401 Unauthorized` 或 `HTTP 429 Too Many Requests`？
+- **401 Unauthorized**：该模型可能是受限模型（Gated Model，如部分需要签署协议的仓库），或者你的 `HF_TOKEN` 拼写有误。请确保在 GitHub Secrets 中配置了正确的只读 Token。
+- **429 Too Many Requests**：匿名抓取触碰了 Hugging Face 的 IP 请求频率限制。请前往 [Hugging Face Access Tokens](https://huggingface.co/settings/tokens) 创建一个 `Read` 权限的 Token，并存入 GitHub Secrets 的 `HF_TOKEN` 中。
+
+---
+
+### Q5: 外部网站如何消费此数据？
+在前端应用中直接使用 `fetch` 即可获取最新 JSON 数据：
+```javascript
+const response = await fetch('https://raw.githubusercontent.com/<你的用户名>/llm-vram-data/main/models.json');
+const data = await response.json();
+console.log(data.models);
+```
+GitHub Raw 默认开启了 `access-control-allow-origin: *` 响应头，支持浏览器跨域直连，且有全球 CDN 加速。
+
