@@ -15,7 +15,7 @@ name: Crawl LLM Models Data
 on:
   schedule:
     # 每天 UTC 02:00 自动触发
-    - cron: "0 2 * * *"
+    - cron: "0 18 * * 1"
   workflow_dispatch:
     # 允许在 GitHub 网页上手动点击「Run workflow」按钮执行测试
 
