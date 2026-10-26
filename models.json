@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-19T22:07:08.690Z",
+  "updated_at": "2026-10-26T22:25:08.946Z",
   "schema_version": 1,
   "models": [
     {
@@ -39,7 +39,7 @@
         "kv_max_context_gb_int4": 21.5
       },
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-19T22:06:48.530Z",
+      "crawled_at": "2026-10-26T22:24:48.098Z",
       "stale": false,
       "qk_rope_head_dim": 64,
       "note": "压缩注意力，KV 不能套标准公式，需人工填实测值"
@@ -79,7 +79,7 @@
         "kv_max_context_gb_int4": 16
       },
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-19T22:06:50.738Z",
+      "crawled_at": "2026-10-26T22:24:50.404Z",
       "stale": false
     },
     {
@@ -119,7 +119,7 @@
         "kv_max_context_gb_int4": 30.5
       },
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-19T22:06:52.397Z",
+      "crawled_at": "2026-10-26T22:24:52.131Z",
       "stale": false,
       "qk_rope_head_dim": 64,
       "note": "压缩注意力，KV 不能套标准公式，需人工填实测值"
@@ -160,7 +160,7 @@
         "kv_max_context_gb_int4": 105
       },
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-19T22:06:54.062Z",
+      "crawled_at": "2026-10-26T22:24:53.863Z",
       "stale": false
     },
     {
@@ -199,7 +199,7 @@
         "kv_max_context_gb_int4": 36
       },
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-19T22:06:55.716Z",
+      "crawled_at": "2026-10-26T22:24:55.584Z",
       "stale": false
     },
     {
@@ -237,7 +237,7 @@
         "kv_max_context_gb_int4": 1.41
       },
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-19T22:06:57.917Z",
+      "crawled_at": "2026-10-26T22:24:57.878Z",
       "stale": false
     },
     {
@@ -275,7 +275,7 @@
         "kv_max_context_gb_int4": 2.5
       },
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-19T22:07:00.109Z",
+      "crawled_at": "2026-10-26T22:25:00.173Z",
       "stale": false
     },
     {
@@ -313,7 +313,7 @@
         "kv_max_context_gb_int4": 1.84
       },
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-19T22:07:02.376Z",
+      "crawled_at": "2026-10-26T22:25:02.492Z",
       "stale": false
     },
     {
@@ -350,7 +350,7 @@
         "kv_max_context_gb_int4": 43.75
       },
       "override_kv_per_token_kb": null,
-      "crawled_at": "2026-10-19T22:07:08.690Z",
+      "crawled_at": "2026-10-26T22:25:08.946Z",
       "stale": false,
       "note": "音视频多模态生成模型 (MiniMaxH3Transformer3DModel)，全套物理体积 464.1 GB"
     }
